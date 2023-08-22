@@ -29,11 +29,11 @@ class _HomePageState extends State<HomePage> {
                         subtitle: Text(snapshot.data!.get('age').toString()),
                         trailing: IconButton(
                           onPressed: () {
-                          //  snapshot.data?.put('name', ' safa flutter developer');
+                          /*  snapshot.data?.put('name', ' safa flutter developer');
                             snapshot.data!.delete('age', );
                             setState(() {
-                              
-                            });
+
+                            });*/
                           },
                         //  icon: Icon(Icons.edit),
                           icon: Icon(Icons.delete),
@@ -60,6 +60,12 @@ class _HomePageState extends State<HomePage> {
         },
         child: Icon(Icons.add),
       ),
+    );
+  }
+  Future<void> _showMyDialog()async{
+    return _showMyDialog(
+      context:context,
+
     );
   }
 }
