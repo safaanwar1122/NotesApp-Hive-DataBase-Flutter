@@ -9,6 +9,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController titleController=TextEditingController();
+  TextEditingController descriptionController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,13 +31,13 @@ class _HomePageState extends State<HomePage> {
                         subtitle: Text(snapshot.data!.get('age').toString()),
                         trailing: IconButton(
                           onPressed: () {
-                          /*  snapshot.data?.put('name', ' safa flutter developer');
+                            /*  snapshot.data?.put('name', ' safa flutter developer');
                             snapshot.data!.delete('age', );
                             setState(() {
 
                             });*/
                           },
-                        //  icon: Icon(Icons.edit),
+                          //  icon: Icon(Icons.edit),
                           icon: Icon(Icons.delete),
                         ),
                       ),
@@ -47,7 +49,8 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var box =
+          _showMyDialog();
+         /* var box =
               await Hive.openBox('safa'); //box or file created with name safa
 
           box.put('name', 'safa anwar');
@@ -57,15 +60,55 @@ class _HomePageState extends State<HomePage> {
           print(box.get('name'));
           print(box.get('age'));
           print(box.get('details')['profession']);
+          */
+
         },
         child: Icon(Icons.add),
       ),
     );
   }
-  Future<void> _showMyDialog()async{
-    return _showMyDialog(
-      context:context,
 
-    );
+  Future<void> _showMyDialog() async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Add notes'),
+            content: SingleChildScrollView(
+              child: ListView(
+               children: [
+                 TextFormField(
+                   controller: titleController,
+                   decoration: InputDecoration(
+                     hintText: 'Enter title',
+                     border: OutlineInputBorder(
+
+                     ),
+                   ),
+                 ),
+                 SizedBox(height: 20,),
+                 TextFormField(
+                   controller: descriptionController,
+                   decoration: InputDecoration(
+                     hintText: 'Enter description',
+                     border: OutlineInputBorder(
+
+                     ),
+                   ),
+                 ),
+               ],
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: () {
+                Navigator.pop(context);
+              }, child: Text('Add')),
+              TextButton(onPressed: () {
+
+                Navigator.pop(context);
+              }, child: Text('Delete')),
+            ],
+          );
+        });
   }
 }
