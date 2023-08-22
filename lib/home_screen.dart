@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_notes_app/Boxes/boxes.dart';
+import 'package:hive_notes_app/Models/notes_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,8 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController titleController=TextEditingController();
-  TextEditingController descriptionController=TextEditingController();
+  final titleController=TextEditingController();
+  final  descriptionController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,31 +22,31 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: FutureBuilder(
-                future: Hive.openBox('safa'),
-                builder: (context, snapshot) {
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: Text(snapshot.data!.get('name').toString()),
-                        subtitle: Text(snapshot.data!.get('age').toString()),
-                        trailing: IconButton(
-                          onPressed: () {
-                            /*  snapshot.data?.put('name', ' safa flutter developer');
-                            snapshot.data!.delete('age', );
-                            setState(() {
-
-                            });*/
-                          },
-                          //  icon: Icon(Icons.edit),
-                          icon: Icon(Icons.delete),
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-          ),
+          // Expanded(
+          //   child: FutureBuilder(
+          //       future: Hive.openBox('safa'),
+          //       builder: (context, snapshot) {
+          //         return Column(
+          //           children: [
+          //             ListTile(
+          //               title: Text(snapshot.data!.get('name').toString()),
+          //               subtitle: Text(snapshot.data!.get('age').toString()),
+          //               trailing: IconButton(
+          //                 onPressed: () {
+          //                   /*  snapshot.data?.put('name', ' safa flutter developer');
+          //                   snapshot.data!.delete('age', );
+          //                   setState(() {
+          //
+          //                   });*/
+          //                 },
+          //                 //  icon: Icon(Icons.edit),
+          //                 icon: Icon(Icons.delete),
+          //               ),
+          //             ),
+          //           ],
+          //         );
+          //       }),
+          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -75,7 +77,7 @@ class _HomePageState extends State<HomePage> {
           return AlertDialog(
             title: Text('Add notes'),
             content: SingleChildScrollView(
-              child: ListView(
+              child: Column(
                children: [
                  TextFormField(
                    controller: titleController,
@@ -101,6 +103,13 @@ class _HomePageState extends State<HomePage> {
             ),
             actions: [
               TextButton(onPressed: () {
+                final data=NotesModel(title: titleController.text, description: descriptionController.text);
+                final box=Boxes.getData();
+                box.add(data);
+                data.save();// extends hiveObject to save data
+                print(box);
+                titleController.clear();
+                descriptionController.clear();
                 Navigator.pop(context);
               }, child: Text('Add')),
               TextButton(onPressed: () {
